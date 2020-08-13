@@ -26,9 +26,12 @@ def predict():
     '''
     For rendering results on HTML GUI
     '''
-    prediction = list(dict(sorted(dict(model[request.form['Tag']]).items(),
+    try:
+        prediction = list(dict(sorted(dict(model[request.form['Tag']]).items(),
                                   key = lambda x: x[1]['weight'], reverse = True)).keys())
-    return render_template('index.html', prediction_text=str(prediction))
+        return render_template('index.html', prediction_text=str(prediction))
+    except KeyError:
+        return render_template('index.html', prediction_text = 'Sorry "' + request.form['Tag'] + '" key does not exist. Please enter a valid key.')
 
 
 if __name__ == "__main__":
